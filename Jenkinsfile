@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'i200405/house-price-prediction-app' // Docker Hub username and image name
+        DOCKER_IMAGE = 'i200405/house-price-prediction-app:latest' // Docker Hub username and image name
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from GitHub
+                // Checkout code from the Git repository
                 git branch: 'master', url: 'https://github.com/HamzaSalarian/House-prodiction.git'
             }
         }
@@ -16,8 +16,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image
-                    bat 'docker build -t $DOCKER_IMAGE .'
+                    // Build the Docker image using the specified tag
+                    bat 'docker build -t %DOCKER_IMAGE% .'
                 }
             }
         }
@@ -27,8 +27,8 @@ pipeline {
                 script {
                     // Log in to Docker Hub and push the image
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        bat 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                        bat 'docker push $DOCKER_IMAGE'
+                        bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
+                        bat 'docker push %DOCKER_IMAGE%'
                     }
                 }
             }
@@ -37,8 +37,8 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    // Run the Docker container on Windows
-                    bat 'docker run -d -p 5000:5000 $DOCKER_IMAGE'
+                    // Run the Docker container
+                    bat 'docker run -d -p 5000:5000 %DOCKER_IMAGE%'
                 }
             }
         }
@@ -46,7 +46,7 @@ pipeline {
 
     post {
         always {
-            // Clean up Docker resources after the build
+            // Clean up Docker environment after build
             bat 'docker system prune -f'
         }
     }
