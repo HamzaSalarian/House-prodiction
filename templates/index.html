@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+</head>
+<body>
+    <h2>House Price Prediction</h2>
+    <form method="POST" action="/predict">
+        <label for="bedrooms">Number of Bedrooms:</label><br>
+        <input type="number" id="bedrooms" name="bedrooms" required><br><br>
+        
+        <label for="bathrooms">Number of Bathrooms:</label><br>
+        <input type="number" id="bathrooms" name="bathrooms" required><br><br>
+        
+        <label for="sqft">Square Footage:</label><br>
+        <input type="number" id="sqft" name="sqft" required><br><br>
+        
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if predicted_price %}
+        <h3>Predicted Price: ${{ predicted_price }}</h3>
+    {% endif %}
+</body>
+</html>
