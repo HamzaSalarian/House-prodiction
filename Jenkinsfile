@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'your-docker-username/house-price-prediction-app' // Docker Hub username and image name
+        DOCKER_IMAGE = 'i200405/house-price-prediction-app' // Docker Hub username and image name
     }
 
     stages {
